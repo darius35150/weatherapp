@@ -1,5 +1,6 @@
 import 'dart:io';
 
+// ignore: unused_import
 import 'package:weatherapp/weatherapp.dart' as weatherapp;
 
 import 'classes/CurrentWeatherData.dart';
