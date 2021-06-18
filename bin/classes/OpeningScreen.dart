@@ -1,9 +1,9 @@
 import 'dart:io';
 
 
-class OpeningScreen{
+class SlashScreen{
 
-  static void splashScreen(){
+  static void getSplashScreen(){
     // ignore: prefer_adjacent_string_concatenation
     stdout.writeln('***************************************************************\n' +
                 '***************************************************************\n' +
