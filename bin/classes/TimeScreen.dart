@@ -11,9 +11,9 @@ class TimeScreen {
   
   static void showTime(city, state) {
     stdout.writeln('Current Weather In ${city.toString().toUpperCase()}, ${state.toString().toUpperCase()}');
-    stdout.writeln('------------------------------------------');
+    stdout.writeln('---------------------------------------------------------------------------------------------');
     stdout.writeln(
-        '|Current Date/Time:    ${DateFormat('MM-dd-yyyy - hh:mm').format(DateTime.now().toLocal())}|');
-    stdout.writeln('------------------------------------------');
+        '|Current Date/Time:    ${DateFormat('MM-dd-yyyy - hh:mm').format(DateTime.now().toLocal())}                                                   |');
+    stdout.writeln('---------------------------------------------------------------------------------------------');
   }
 }

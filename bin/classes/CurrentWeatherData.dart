@@ -8,10 +8,13 @@ class CurrentWeatherData {
   String partialURL = 'https://api.openweathermap.org/data/2.5/weather?';
   String locationURL = 'q=';
   String keyURL = ',1&appid=';
-
+  
   var url, response;
   var apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
   Map? jsonConverter;
+
+  double temp = 0;
+  double feelsLike = 0;
 
   CurrentWeatherData(var city, var state) {
     this.city = city;
@@ -33,12 +36,15 @@ class CurrentWeatherData {
   void parseAndDisplayJson(var jsonFile) {
     jsonConverter = JsonDecoder().convert(jsonFile);
 
+    temp = ((jsonConverter?['main']['temp'] - 273.15) * 9) / 5 + 32;
+    feelsLike = ((jsonConverter?['main']['feels_like'] - 273.15) * 9) / 5 + 32;
+
     for (var data in jsonConverter?['weather']) {
-      stdout.writeln('|     Weather       |     Descr          |');
-      stdout.writeln('------------------------------------------');
+      stdout.writeln('| Weather               | Descr                    | Temp               | Feels Like        |');
+      stdout.writeln('---------------------------------------------------------------------------------------------');
       stdout.writeln(
-          '| ${data['main']}             | ${data['description']}          |');
-      stdout.writeln('------------------------------------------\n\n');
+          '| ${data['main']}           ' + '     |' + ' ${data['description']}' + '          |' + ' ${temp.round()}' + '                 |' + ' ${feelsLike.round()}' + '                |');
+      stdout.writeln('---------------------------------------------------------------------------------------------\n\n');
     }
   }
 }
