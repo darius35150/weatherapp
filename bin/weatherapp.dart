@@ -9,7 +9,7 @@ import 'classes/OpeningScreen.dart' as openingScreen;
 // ignore: library_prefixes
 import 'classes/TimeScreen.dart' as timeScreen;
 import 'classes/MainMenu.dart';
-import 'classes/FiveDayForecast.dart';
+import 'classes/SevenDayForecast.dart';
 
 String menuItem = '';
 var city, state;
@@ -44,7 +44,7 @@ Future<void> main(List<String> arguments) async {
     case '2':
       timeScreen.TimeScreen.showTime(city, state);
 
-      fiveDayForecast = FiveDayForecast(city, state);
+      fiveDayForecast = SevenDayForecast(city, state);
       fiveDayForecast.geocodeLocation();
 
       break;
