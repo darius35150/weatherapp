@@ -11,7 +11,7 @@ class MainMenu {
     stdout.writeln('-----------------------------------------------');
     stdout.writeln('| Current Weather |     5 Day |     16 Day    |');
     stdout.writeln('-----------------------------------------------');
-    stdout.writeln('| Enter 1         | Enter 2   |     Enter 3   |');
+    stdout.writeln('| Enter 1         | Enter 2   |  Coming soon  |');
     stdout.writeln('-----------------------------------------------');
 
     stdout.write('Please enter forecast type:   ');

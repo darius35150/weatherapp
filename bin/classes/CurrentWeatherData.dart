@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -25,7 +24,7 @@ class CurrentWeatherData {
     this.state = state;
   }
 
-  Future<void> showCurrentData() async {
+  Future<bool?> showCurrentData() async {
     url = Uri.parse(
         partialURL + locationURL + city + ',' + state + keyURL + apiKey);
 
@@ -35,6 +34,7 @@ class CurrentWeatherData {
     // print('Response body:   ${response.body}');
 
     parseAndDisplayJson(response.body);
+
   }
 
   void parseAndDisplayJson(var jsonFile) {
@@ -45,7 +45,6 @@ class CurrentWeatherData {
     List list = jsonConverter?['weather'];
     // print(list.length);
     for (var data in jsonConverter?['weather']) {
-      counter += 1;
       if (counter != list.length) {
         stdout.writeln(
             '| Weather               | Descr                    | Temp               | Feels Like        |');
@@ -55,19 +54,19 @@ class CurrentWeatherData {
       stdout.writeln('| ${data['main']}           ' +
           '     |' +
           ' ${data['description']}' +
-          '          |' +
-          ' ${temp.round()}' +
-          '                 |' +
+          '               |' +
+          '  ${temp.round()}' +
+          '                |' +
           ' ${feelsLike.round()}' +
           '                |');
       if (list.length > 1) {
         stdout.writeln(
             '---------------------------------------------------------------------------------------------');
-      }
-      else{
+      } else {
         stdout.writeln(
             '---------------------------------------------------------------------------------------------\n\n');
       }
+      counter += 1;
     }
   }
 }
