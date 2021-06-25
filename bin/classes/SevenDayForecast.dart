@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 class SevenDayForecast {
+
   var city;
   var state;
   http.Response? response;
@@ -12,10 +13,10 @@ class SevenDayForecast {
   String sevenDayEndURL = '&exlude=current,minutely,hourly,alerts&appid=';
   String geocodeEndURL = ',1&limit=1&appid=';
   String latURL = 'lat=';
-  String longURL = '&long=';
+  String longURL = '&lon=';
   var url;
-  List<dynamic> geocodeResponse = [];
-  var sevenDayResponse;
+  http.Response? geocodeResponse;
+  http.Response? sevenDayResponse;
   var apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
   List? jsonConverter;
 
@@ -29,20 +30,27 @@ class SevenDayForecast {
   SevenDayForecast(this.city, this.state);
 
   Future<void> showSevenDayForecastData() async {
-    url = Uri.parse(sevenDayURL + latURL + longURL + sevenDayEndURL + apiKey);
+    print('lat = $_lat      long= $_long');
+    url = Uri.parse(sevenDayURL + latURL + _lat.toString() + longURL + _long.toString() + sevenDayEndURL + apiKey);
+    print(url);
     sevenDayResponse = await http.post(url, body: {'name': 'doodle', 'color': 'green'});
 
-    parseAndDisplayJson(sevenDayResponse.body);
+    print(sevenDayResponse!.body);
+    // parseAndDisplayJson(sevenDayResponse.body);
   }
 
   Future<void> geocodeLocation() async {
     url = Uri.parse(
         geocodeURL + locationURL + city + ',' + state + geocodeEndURL + apiKey);
-    response = await http.get(url);
-    // geocodeResponse.add(response);
-    print(response?.body.toString());
-    jsonConverter = JsonDecoder().convert(response!.body.toString());
-    print('geocodeLocation|  ${jsonConverter?.elementAt(0)['name']}  |');
+    geocodeResponse = await http.get(url);
+    // print(geocodeResponse?.body.toString());
+    jsonConverter = JsonDecoder().convert(geocodeResponse!.body.toString());
+    // print('geocodeLocation|  ${jsonConverter?.elementAt(0)['name']}  |');
+    _lat = jsonConverter?.elementAt(0)['lat'];
+    _long = jsonConverter?.elementAt(0)['lon'];
+
+    await showSevenDayForecastData();
+    // print('lat = $lat      long= $long');
   }
 
   void parseAndDisplayJson(var jsonFile) {
@@ -78,23 +86,19 @@ class SevenDayForecast {
     // }
   }
 
-  // ignore: unnecessary_getters_setters
-  double get lat {
-    return _lat;
-  }
-
-  // ignore: unnecessary_getters_setters
-  double get long {
-    return _long;
-  }
-
-  // ignore: unnecessary_getters_setters
-  set lat(double lat) {
-    _lat = lat;
-  }
-
-  // ignore: unnecessary_getters_setters
-  set long(double long) {
-    _long = long;
-  }
+  // double get lat {
+  //   return _lat;
+  // }
+  //
+  // double get long {
+  //   return _long;
+  // }
+  //
+  // set lat(double lat) {
+  //   _lat = lat;
+  // }
+  //
+  // set long(double long) {
+  //   _long = long;
+  // }
 }
