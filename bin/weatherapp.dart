@@ -53,6 +53,7 @@ class WeatherApp {
 
         sevenDayForecast = SevenDayForecast(city, state);
         sevenDayForecast.geocodeLocation();
+        // sevenDayForecast.showSevenDayForecastData();
 
         refreshIsRunning = true;
 
