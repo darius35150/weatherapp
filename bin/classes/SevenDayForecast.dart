@@ -29,17 +29,7 @@ class SevenDayForecast {
 
   SevenDayForecast(this.city, this.state);
 
-  Future<void> showSevenDayForecastData() async {
-    print('lat = $_lat      long= $_long');
-    url = Uri.parse(sevenDayURL + latURL + _lat.toString() + longURL + _long.toString() + sevenDayEndURL + apiKey);
-    print(url);
-    sevenDayResponse = await http.post(url, body: {'name': 'doodle', 'color': 'green'});
-
-    print(sevenDayResponse!.body);
-    // parseAndDisplayJson(sevenDayResponse.body);
-  }
-
-  Future<void> geocodeLocation() async {
+  Future<void> geocodeLocationAndDisplayData() async {
     url = Uri.parse(
         geocodeURL + locationURL + city + ',' + state + geocodeEndURL + apiKey);
     geocodeResponse = await http.get(url);
@@ -50,16 +40,16 @@ class SevenDayForecast {
     _long = jsonConverter?.elementAt(0)['lon'];
 
     await showSevenDayForecastData();
-    // print('lat = $lat      long= $long');
   }
 
-  void parseAndDisplayJson(var jsonFile) {
-    // jsonConverter = JsonDecoder().convert(jsonFile);
-    // print('parseAndDispalyJson:   | $jsonConverter|');
-    // temp = ((jsonConverter?['main']['temp'] - 273.15) * 9) / 5 + 32;
-    // feelsLike = ((jsonConverter?['main']['feels_like'] - 273.15) * 9) / 5 + 32;
-    // List list = jsonConverter?['weather'];
-    // // print(list.length);
+  Future<void> showSevenDayForecastData() async {
+
+    url = Uri.parse(sevenDayURL + latURL + _lat.toString() + longURL + _long.toString() + sevenDayEndURL + apiKey);
+
+    sevenDayResponse = await http.post(url, body: {'name': 'doodle', 'color': 'green'});
+
+    print(sevenDayResponse!.body);
+    // for(var data in sevenDayResponse)
     // for (var data in jsonConverter?['weather']) {
     //   if (counter != list.length) {
     //     stdout.writeln(
@@ -85,20 +75,4 @@ class SevenDayForecast {
     //   counter += 1;
     // }
   }
-
-  // double get lat {
-  //   return _lat;
-  // }
-  //
-  // double get long {
-  //   return _long;
-  // }
-  //
-  // set lat(double lat) {
-  //   _lat = lat;
-  // }
-  //
-  // set long(double long) {
-  //   _long = long;
-  // }
 }

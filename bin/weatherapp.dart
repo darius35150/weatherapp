@@ -52,7 +52,7 @@ class WeatherApp {
         timeScreen.TimeScreen.showTime(city, state);
 
         sevenDayForecast = SevenDayForecast(city, state);
-        sevenDayForecast.geocodeLocation();
+        sevenDayForecast.geocodeLocationAndDisplayData();
         // sevenDayForecast.showSevenDayForecastData();
 
         refreshIsRunning = true;
