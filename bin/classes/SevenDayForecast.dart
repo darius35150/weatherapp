@@ -10,7 +10,7 @@ class SevenDayForecast {
   String sevenDayURL = 'https://api.openweathermap.org/data/2.5/onecall?';
   String geocodeURL = 'http://api.openweathermap.org/geo/1.0/direct?';
   String locationURL = 'q=';
-  String sevenDayEndURL = '&exlude=current,minutely,hourly,alerts&appid=';
+  String sevenDayEndURL = '&units=imperial&exclude=current,minutely,hourly,alerts&appid=';
   String geocodeEndURL = ',1&limit=1&appid=';
   String latURL = 'lat=';
   String longURL = '&lon=';
@@ -18,7 +18,8 @@ class SevenDayForecast {
   http.Response? geocodeResponse;
   http.Response? sevenDayResponse;
   var apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
-  List? jsonConverter;
+  List? geocodeConverter;
+  Map? sevenDayConverter;
 
   double temp = 0;
   double feelsLike = 0;
@@ -34,10 +35,10 @@ class SevenDayForecast {
         geocodeURL + locationURL + city + ',' + state + geocodeEndURL + apiKey);
     geocodeResponse = await http.get(url);
     // print(geocodeResponse?.body.toString());
-    jsonConverter = JsonDecoder().convert(geocodeResponse!.body.toString());
+    geocodeConverter = JsonDecoder().convert(geocodeResponse!.body.toString());
     // print('geocodeLocation|  ${jsonConverter?.elementAt(0)['name']}  |');
-    _lat = jsonConverter?.elementAt(0)['lat'];
-    _long = jsonConverter?.elementAt(0)['lon'];
+    _lat = geocodeConverter?.elementAt(0)['lat'];
+    _long = geocodeConverter?.elementAt(0)['lon'];
 
     await showSevenDayForecastData();
   }
@@ -46,33 +47,57 @@ class SevenDayForecast {
 
     url = Uri.parse(sevenDayURL + latURL + _lat.toString() + longURL + _long.toString() + sevenDayEndURL + apiKey);
 
-    sevenDayResponse = await http.post(url, body: {'name': 'doodle', 'color': 'green'});
+    sevenDayResponse = await http.post(url);
+    sevenDayConverter = JsonDecoder().convert(sevenDayResponse!.body);
+    // print(url);
+    // print(DateTime.fromMillisecondsSinceEpoch(sevenDayConverter!['daily'][0]['dt'] * 1000));
+    stdout.writeln(
+        '| Day/Date                           | Weather               | Descr                    | Temp               | Feels Like        |');
+    stdout.writeln(
+        '------------------------------------------------------------------------------------------------------------');
+    for(var data in sevenDayConverter!['daily'])
+    {
+      var datetime = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).toString().substring(0,10);
+      var day = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).weekday;
+      stdout.writeln('| ${getDayOfTheWeek(day)}  $datetime               | ${data['weather'][0]['main']}           ' +
+          '     |' +
+          ' ${data['weather'][0]['description']}' +
+          '               |' +
+          '  ${data['temp']['max']}' +
+          '                |' +
+          ' ${data['feels_like']['day']}' +
+          '                |');
+      stdout.writeln(
+          '---------------------------------------------------------------------------------------------');
+    }
+  }
 
-    print(sevenDayResponse!.body);
-    // for(var data in sevenDayResponse)
-    // for (var data in jsonConverter?['weather']) {
-    //   if (counter != list.length) {
-    //     stdout.writeln(
-    //         '| Weather               | Descr                    | Temp               | Feels Like        |');
-    //   }
-    //   stdout.writeln(
-    //       '---------------------------------------------------------------------------------------------');
-    //   stdout.writeln('| ${data['main']}           ' +
-    //       '     |' +
-    //       ' ${data['description']}' +
-    //       '               |' +
-    //       '  ${temp.round()}' +
-    //       '                |' +
-    //       ' ${feelsLike.round()}' +
-    //       '                |');
-    //   if (list.length > 1) {
-    //     stdout.writeln(
-    //         '---------------------------------------------------------------------------------------------');
-    //   } else {
-    //     stdout.writeln(
-    //         '---------------------------------------------------------------------------------------------\n\n');
-    //   }
-    //   counter += 1;
-    // }
+  String getDayOfTheWeek(int day)
+  {
+    switch(day)
+    {
+      case DateTime.monday:
+        return 'Monday';
+        break;
+      case DateTime.tuesday:
+        return 'Tuesday';
+        break;
+      case DateTime.wednesday:
+        return 'Wednesday';
+        break;
+      case DateTime.thursday:
+        return 'Thursday';
+        break;
+      case DateTime.friday:
+        return 'Friday';
+        break;
+      case DateTime.saturday:
+        return 'Saturday';
+        break;
+      case DateTime.sunday:
+        return 'Sunday';
+        break;
+    }
+    return '';
   }
 }
