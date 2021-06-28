@@ -52,23 +52,23 @@ class SevenDayForecast {
     // print(url);
     // print(DateTime.fromMillisecondsSinceEpoch(sevenDayConverter!['daily'][0]['dt'] * 1000));
     stdout.writeln(
-        '| Day/Date                           | Weather               | Descr                    | Temp               | Feels Like        |');
+        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     stdout.writeln(
-        '------------------------------------------------------------------------------------------------------------');
+        '| Day/Date                                   | Weather                              | Descr                           | Temp                    | Feels Like          |');
+    stdout.writeln(
+        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     for(var data in sevenDayConverter!['daily'])
     {
       var datetime = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).toString().substring(0,10);
       var day = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).weekday;
-      stdout.writeln('| ${getDayOfTheWeek(day)}  $datetime               | ${data['weather'][0]['main']}           ' +
-          '     |' +
+      stdout.writeln('${getDayOfTheWeek(day)} $datetime                            |' + ' ${data['weather'][0]['main']}                                  |' +
           ' ${data['weather'][0]['description']}' +
-          '               |' +
-          '  ${data['temp']['max']}' +
-          '                |' +
-          ' ${data['feels_like']['day']}' +
-          '                |');
+          '                     |' +
+          ' ${data['temp']['max']}' +
+          '                   |' +
+          ' ${data['feels_like']['day']}');
       stdout.writeln(
-          '---------------------------------------------------------------------------------------------');
+          '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
   }
 
