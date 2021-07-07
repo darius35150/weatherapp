@@ -61,12 +61,23 @@ class SevenDayForecast {
     {
       var datetime = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).toString().substring(0,10);
       var day = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).weekday;
-      stdout.writeln('${getDayOfTheWeek(day)} $datetime                            |' + ' ${data['weather'][0]['main']}                                  |' +
-          ' ${data['weather'][0]['description']}' +
-          '                     |' +
-          ' ${data['temp']['max']}' +
-          '                   |' +
-          ' ${data['feels_like']['day']}');
+      // stdout.writeln('${getDayOfTheWeek(day)} $datetime                            |' + ' ${data['weather'][0]['main']}                                  |' +
+      //     ' ${data['weather'][0]['description']}' +
+      //     '                     |' +
+      //     ' ${data['temp']['max']}' +
+      //     '                   |' +
+      //     ' ${data['feels_like']['day']}');
+      stdout.write('|');
+      stdout.write(' ${getDayOfTheWeek(day)} $datetime');
+      stdout.write('                             |');
+      stdout.write(' ${data['weather'][0]['main']}');
+      stdout.write('                                 |');
+      stdout.write(' ${data['weather'][0]['description']}');
+      stdout.write('                   |');
+      stdout.write(' ${data['temp']['max']}');
+      stdout.write('                   |');
+      stdout.write(' ${data['feels_like']['day']}');
+      stdout.writeln('                   |');
       stdout.writeln(
           '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
@@ -77,26 +88,19 @@ class SevenDayForecast {
     switch(day)
     {
       case DateTime.monday:
-        return 'Monday';
-        break;
+        return 'Mon';
       case DateTime.tuesday:
-        return 'Tuesday';
-        break;
+        return 'Tue';
       case DateTime.wednesday:
-        return 'Wednesday';
-        break;
+        return 'Wed';
       case DateTime.thursday:
-        return 'Thursday';
-        break;
+        return 'Thu';
       case DateTime.friday:
-        return 'Friday';
-        break;
+        return 'Fri';
       case DateTime.saturday:
-        return 'Saturday';
-        break;
+        return 'Sat';
       case DateTime.sunday:
-        return 'Sunday';
-        break;
+        return 'Sun';
     }
     return '';
   }
