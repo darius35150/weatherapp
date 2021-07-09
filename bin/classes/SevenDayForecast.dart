@@ -70,14 +70,23 @@ class SevenDayForecast {
       stdout.write('|');
       stdout.write(' ${getDayOfTheWeek(day)} $datetime');
       stdout.write('                             |');
-      stdout.write(' ${data['weather'][0]['main']}');
+      stdout.write(' ${data['weather'][0]['main'].toString().substring(0, 4)}');
       stdout.write('                                 |');
-      stdout.write(' ${data['weather'][0]['description']}');
+      stdout.write(' ${data['weather'][0]['description'].toString().substring(0, data['weather'][0]['description'].toString().length)}');
+      stdout.write(returnCorrectSpacing(data['weather'][0]['description'].toString().length));
+      if(data['temp']['max'].toString().length < 5) {
+        stdout.write(' ${data['temp']['max']}' + '0');
+      } else {
+        stdout.write(' ${data['temp']['max']}');
+      }
       stdout.write('                   |');
-      stdout.write(' ${data['temp']['max']}');
-      stdout.write('                   |');
-      stdout.write(' ${data['feels_like']['day']}');
-      stdout.writeln('                   |');
+      if(data['feels_like']['day'].toString().length < 5){
+        stdout.write(' ${data['feels_like']['day']}' + '0');
+      }
+      else {
+        stdout.write(' ${data['feels_like']['day']}');
+      }
+      stdout.writeln('               |');
       stdout.writeln(
           '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
@@ -103,5 +112,33 @@ class SevenDayForecast {
         return 'Sun';
     }
     return '';
+  }
+
+  String? returnCorrectSpacing(int length)
+  {
+
+    switch(length)
+    {
+      case 5:
+        return '                    |';
+      case 6:
+        return '                    |';
+      case 7:
+        return '                    |';
+      case 8:
+        return '                    |';
+      case 9:
+        return '                       |';
+      case 10:
+        return '                      |';
+      case 11:
+        return '                     |';
+      case 12:
+        return '                    |';
+      case 13:
+        return '                   |';
+      case 14:
+        return '                  |';
+    }
   }
 }

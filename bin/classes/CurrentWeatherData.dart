@@ -1,4 +1,3 @@
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
@@ -51,14 +50,14 @@ class CurrentWeatherData {
       }
       stdout.writeln(
           '---------------------------------------------------------------------------------------------');
-      stdout.writeln('| ${data['main']}           ' +
-          '     |' +
-          ' ${data['description']}' +
-          '               |' +
-          '  ${temp.round()}' +
-          '                |' +
-          ' ${feelsLike.round()}' +
-          '                |');
+      stdout.write('| overcast clouds'.substring(0, 17));
+      stdout.write('       |');
+      stdout.write(' ${data['description'].toString().substring(0, 13)}');
+      stdout.write('            |');
+      stdout.write('  ${temp.round()}');
+      stdout.write('                |');
+      stdout.write(' ${feelsLike.round()}');
+      stdout.writeln('                |');
       if (list.length > 1) {
         stdout.writeln(
             '---------------------------------------------------------------------------------------------');
