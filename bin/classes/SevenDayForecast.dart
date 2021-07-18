@@ -2,15 +2,17 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-class SevenDayForecast {
+import '../weatherapp.dart' as mainclass;
 
+class SevenDayForecast {
   var city;
   var state;
   http.Response? response;
   String sevenDayURL = 'https://api.openweathermap.org/data/2.5/onecall?';
   String geocodeURL = 'http://api.openweathermap.org/geo/1.0/direct?';
   String locationURL = 'q=';
-  String sevenDayEndURL = '&units=imperial&exclude=current,minutely,hourly,alerts&appid=';
+  String sevenDayEndURL =
+      '&units=imperial&exclude=current,minutely,hourly,alerts&appid=';
   String geocodeEndURL = ',1&limit=1&appid=';
   String latURL = 'lat=';
   String longURL = '&lon=';
@@ -34,9 +36,9 @@ class SevenDayForecast {
     url = Uri.parse(
         geocodeURL + locationURL + city + ',' + state + geocodeEndURL + apiKey);
     geocodeResponse = await http.get(url);
-    // print(geocodeResponse?.body.toString());
+  
     geocodeConverter = JsonDecoder().convert(geocodeResponse!.body.toString());
-    // print('geocodeLocation|  ${jsonConverter?.elementAt(0)['name']}  |');
+ 
     _lat = geocodeConverter?.elementAt(0)['lat'];
     _long = geocodeConverter?.elementAt(0)['lon'];
 
@@ -44,58 +46,59 @@ class SevenDayForecast {
   }
 
   Future<void> showSevenDayForecastData() async {
-
-    url = Uri.parse(sevenDayURL + latURL + _lat.toString() + longURL + _long.toString() + sevenDayEndURL + apiKey);
+    url = Uri.parse(sevenDayURL +
+        latURL +
+        _lat.toString() +
+        longURL +
+        _long.toString() +
+        sevenDayEndURL +
+        apiKey);
 
     sevenDayResponse = await http.post(url);
     sevenDayConverter = JsonDecoder().convert(sevenDayResponse!.body);
-    // print(url);
-    // print(DateTime.fromMillisecondsSinceEpoch(sevenDayConverter!['daily'][0]['dt'] * 1000));
+
     stdout.writeln(
         '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     stdout.writeln(
         '| Day/Date                                   | Weather                              | Descr                           | Temp                    | Feels Like          |');
     stdout.writeln(
         '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
-    for(var data in sevenDayConverter!['daily'])
-    {
-      var datetime = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).toString().substring(0,10);
+    for (var data in sevenDayConverter!['daily']) {
+      var datetime = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000)
+          .toString()
+          .substring(0, 10);
       var day = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).weekday;
-      // stdout.writeln('${getDayOfTheWeek(day)} $datetime                            |' + ' ${data['weather'][0]['main']}                                  |' +
-      //     ' ${data['weather'][0]['description']}' +
-      //     '                     |' +
-      //     ' ${data['temp']['max']}' +
-      //     '                   |' +
-      //     ' ${data['feels_like']['day']}');
+      
       stdout.write('|');
       stdout.write(' ${getDayOfTheWeek(day)} $datetime');
       stdout.write('                             |');
       stdout.write(' ${data['weather'][0]['main'].toString().substring(0, 4)}');
       stdout.write('                                 |');
-      stdout.write(' ${data['weather'][0]['description'].toString().substring(0, data['weather'][0]['description'].toString().length)}');
-      stdout.write(returnCorrectSpacing(data['weather'][0]['description'].toString().length));
-      if(data['temp']['max'].toString().length < 5) {
+      stdout.write(
+          ' ${data['weather'][0]['description'].toString().substring(0, data['weather'][0]['description'].toString().length)}');
+      stdout.write(returnCorrectSpacing(
+          data['weather'][0]['description'].toString().length));
+      if (data['temp']['max'].toString().length < 5) {
         stdout.write(' ${data['temp']['max']}' + '0');
       } else {
         stdout.write(' ${data['temp']['max']}');
       }
       stdout.write('                   |');
-      if(data['feels_like']['day'].toString().length < 5){
+      if (data['feels_like']['day'].toString().length < 5) {
         stdout.write(' ${data['feels_like']['day']}' + '0');
-      }
-      else {
+      } else {
         stdout.write(' ${data['feels_like']['day']}');
       }
       stdout.writeln('               |');
       stdout.writeln(
           '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
+
+    mainclass.WeatherApp.refresh('SevenDayForecast');
   }
 
-  String getDayOfTheWeek(int day)
-  {
-    switch(day)
-    {
+  String getDayOfTheWeek(int day) {
+    switch (day) {
       case DateTime.monday:
         return 'Mon';
       case DateTime.tuesday:
@@ -114,11 +117,8 @@ class SevenDayForecast {
     return '';
   }
 
-  String? returnCorrectSpacing(int length)
-  {
-
-    switch(length)
-    {
+  String? returnCorrectSpacing(int length) {
+    switch (length) {
       case 5:
         return '                    |';
       case 6:

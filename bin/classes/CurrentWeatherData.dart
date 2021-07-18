@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+import '../weatherapp.dart' as mainclass;
 
 class CurrentWeatherData {
   var city;
@@ -11,6 +12,7 @@ class CurrentWeatherData {
 
   var url, response;
   var apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
+
   Map? jsonConverter;
 
   double temp = 0;
@@ -29,11 +31,7 @@ class CurrentWeatherData {
 
     response = await http.post(url, body: {'name': 'doodle', 'color': 'green'});
 
-    // print('Response Status:  ${response.statusCode}');
-    // print('Response body:   ${response.body}');
-
     parseAndDisplayJson(response.body);
-
   }
 
   void parseAndDisplayJson(var jsonFile) {
@@ -42,7 +40,7 @@ class CurrentWeatherData {
     temp = ((jsonConverter?['main']['temp'] - 273.15) * 9) / 5 + 32;
     feelsLike = ((jsonConverter?['main']['feels_like'] - 273.15) * 9) / 5 + 32;
     List list = jsonConverter?['weather'];
-    // print(list.length);
+
     for (var data in jsonConverter?['weather']) {
       if (counter != list.length) {
         stdout.writeln(
@@ -52,7 +50,13 @@ class CurrentWeatherData {
           '---------------------------------------------------------------------------------------------');
       stdout.write('| overcast clouds'.substring(0, 17));
       stdout.write('       |');
-      stdout.write(' ${data['description'].toString().substring(0, 13)}');
+
+      if (data['description'].toString().length > 13) {
+        stdout.write(' ${data['description'].toString()}');
+      } else {
+        stdout.write(' ${data['description'].toString().substring(0, 13)}');
+      }
+
       stdout.write('            |');
       stdout.write('  ${temp.round()}');
       stdout.write('                |');
@@ -66,6 +70,33 @@ class CurrentWeatherData {
             '---------------------------------------------------------------------------------------------\n\n');
       }
       counter += 1;
+    }
+
+    mainclass.WeatherApp.refresh('CurrentWeatherData');
+  }
+
+  String? returnCorrectSpacing(int length) {
+    switch (length) {
+      case 5:
+        return '                    |';
+      case 6:
+        return '                    |';
+      case 7:
+        return '                    |';
+      case 8:
+        return '                    |';
+      case 9:
+        return '                       |';
+      case 10:
+        return '                      |';
+      case 11:
+        return '                     |';
+      case 12:
+        return '                    |';
+      case 13:
+        return '                   |';
+      case 14:
+        return '                  |';
     }
   }
 }
