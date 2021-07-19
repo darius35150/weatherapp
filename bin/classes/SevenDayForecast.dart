@@ -139,6 +139,18 @@ class SevenDayForecast {
         return '                   |';
       case 14:
         return '                  |';
+      case 15:
+        return '                |';
+      case 16:
+        return '                |';
+      case 17:
+        return '                  |';
+      case 18:
+        return '                  |';
+      case 19:
+        return '                  |';
+      case 20:
+        return '                  |';
     }
   }
 }
