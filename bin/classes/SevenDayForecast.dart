@@ -7,7 +7,7 @@ import '../weatherapp.dart' as mainclass;
 class SevenDayForecast {
   var city;
   var state;
-  http.Response? response;
+
   String sevenDayURL = 'https://api.openweathermap.org/data/2.5/onecall?';
   String geocodeURL = 'http://api.openweathermap.org/geo/1.0/direct?';
   String locationURL = 'q=';
@@ -36,9 +36,9 @@ class SevenDayForecast {
     url = Uri.parse(
         geocodeURL + locationURL + city + ',' + state + geocodeEndURL + apiKey);
     geocodeResponse = await http.get(url);
-  
+
     geocodeConverter = JsonDecoder().convert(geocodeResponse!.body.toString());
- 
+
     _lat = geocodeConverter?.elementAt(0)['lat'];
     _long = geocodeConverter?.elementAt(0)['lon'];
 
@@ -68,7 +68,7 @@ class SevenDayForecast {
           .toString()
           .substring(0, 10);
       var day = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).weekday;
-      
+
       stdout.write('|');
       stdout.write(' ${getDayOfTheWeek(day)} $datetime');
       stdout.write('                             |');
@@ -79,7 +79,11 @@ class SevenDayForecast {
       stdout.write(returnCorrectSpacing(
           data['weather'][0]['description'].toString().length));
       if (data['temp']['max'].toString().length < 5) {
-        stdout.write(' ${data['temp']['max']}' + '0');
+        if (data['temp']['max'].toString().length == 2) {
+          stdout.write(' ${data['temp']['max']}' + '.00');
+        } else {
+          stdout.write(' ${data['temp']['max']}' + '0');
+        }
       } else {
         stdout.write(' ${data['temp']['max']}');
       }
@@ -140,7 +144,7 @@ class SevenDayForecast {
       case 14:
         return '                  |';
       case 15:
-        return '                |';
+        return '                 |';
       case 16:
         return '                |';
       case 17:
