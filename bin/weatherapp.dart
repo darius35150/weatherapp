@@ -1,8 +1,5 @@
 import 'dart:io';
 
-// ignore: unused_import
-import 'package:test/expect.dart';
-
 import 'classes/CurrentWeatherData.dart';
 // ignore: library_prefixes
 import 'classes/OpeningScreen.dart' as openingScreen;
@@ -19,10 +16,11 @@ String current = 'CurrentWeatherData';
 var city, state;
 var currentWeatherData;
 var sevenDayForecast;
-var sixteenDayForecast;
+var fiveDayForecast;
 var menu;
 
 bool refreshIsRunning = false;
+var _apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
 
 class WeatherApp {
   WeatherApp();
@@ -81,9 +79,11 @@ class WeatherApp {
       case '2':
         timeScreen.TimeScreen.showTime(city, state);
 
+        fiveDayForecast = FiveDayForecast(city, state);
+        fiveDayForecast.getFiveDayForecast();
         break;
       case '3':
-         timeScreen.TimeScreen.showTime(city, state);
+        timeScreen.TimeScreen.showTime(city, state);
 
         sevenDayForecast = SevenDayForecast(city, state);
         sevenDayForecast.geocodeLocationAndDisplayData();
@@ -151,6 +151,11 @@ class WeatherApp {
         }
       }
     }
+  }
+
+  String get apiKey
+  {
+    return _apiKey;
   }
 }
 

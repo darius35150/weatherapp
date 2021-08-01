@@ -14,7 +14,7 @@ class SlashScreen {
             
     stdout.writeln('Built using the following technologies: \n' +
         'Prog. Language:   Dart\n' +
-        'Dev enviro:       VS Code\n' +
+        'Dev enviro:       VS Code and Android Studio\n' +
         'API:              Open Weather API\n' +
         'Developer:        Darius Holley\n\n');
     

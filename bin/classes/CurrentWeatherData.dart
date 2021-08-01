@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
-import '../weatherapp.dart' as mainclass;
+import '../weatherapp.dart';
 
 class CurrentWeatherData {
   var city;
@@ -11,7 +11,7 @@ class CurrentWeatherData {
   String keyURL = ',1&appid=';
 
   var url, response;
-  var apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
+  var mainClass;
 
   Map? jsonConverter;
 
@@ -26,8 +26,9 @@ class CurrentWeatherData {
   }
 
   Future<bool?> showCurrentData() async {
+    mainClass = WeatherApp();
     url = Uri.parse(
-        partialURL + locationURL + city + ',' + state + keyURL + apiKey);
+        partialURL + locationURL + city + ',' + state + keyURL + mainClass.apiKey);
 
     response = await http.post(url, body: {'name': 'doodle', 'color': 'green'});
 
@@ -72,7 +73,7 @@ class CurrentWeatherData {
       counter += 1;
     }
 
-    mainclass.WeatherApp.refresh('CurrentWeatherData');
+    mainClass.refresh('CurrentWeatherData');
   }
 
   String? returnCorrectSpacing(int length) {

@@ -2,11 +2,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-import '../weatherapp.dart' as mainclass;
+import '../weatherapp.dart' as weatherApp;
 
 class SevenDayForecast {
   var city;
   var state;
+  var url;
+  var mainClass = weatherApp.WeatherApp();
 
   String sevenDayURL = 'https://api.openweathermap.org/data/2.5/onecall?';
   String geocodeURL = 'http://api.openweathermap.org/geo/1.0/direct?';
@@ -16,10 +18,11 @@ class SevenDayForecast {
   String geocodeEndURL = ',1&limit=1&appid=';
   String latURL = 'lat=';
   String longURL = '&lon=';
-  var url;
+
+
   http.Response? geocodeResponse;
   http.Response? sevenDayResponse;
-  var apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
+
   List? geocodeConverter;
   Map? sevenDayConverter;
 
@@ -34,7 +37,7 @@ class SevenDayForecast {
 
   Future<void> geocodeLocationAndDisplayData() async {
     url = Uri.parse(
-        geocodeURL + locationURL + city + ',' + state + geocodeEndURL + apiKey);
+        geocodeURL + locationURL + city + ',' + state + geocodeEndURL + mainClass.apiKey);
     geocodeResponse = await http.get(url);
 
     geocodeConverter = JsonDecoder().convert(geocodeResponse!.body.toString());
@@ -52,7 +55,7 @@ class SevenDayForecast {
         longURL +
         _long.toString() +
         sevenDayEndURL +
-        apiKey);
+        mainClass.apiKey);
 
     sevenDayResponse = await http.post(url);
     sevenDayConverter = JsonDecoder().convert(sevenDayResponse!.body);
@@ -98,7 +101,7 @@ class SevenDayForecast {
           '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
 
-    mainclass.WeatherApp.refresh('SevenDayForecast');
+    weatherApp.WeatherApp.refresh('SevenDayForecast');
   }
 
   String getDayOfTheWeek(int day) {
