@@ -2,7 +2,6 @@ import 'dart:io';
 
 // ignore: unused_import
 import 'package:test/expect.dart';
-import 'package:weatherapp/weatherapp.dart' as weatherapp;
 
 import 'classes/CurrentWeatherData.dart';
 // ignore: library_prefixes
