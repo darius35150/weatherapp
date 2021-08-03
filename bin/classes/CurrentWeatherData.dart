@@ -93,13 +93,13 @@ class CurrentWeatherData {
       case 10:
         return '               |';
       case 11:
-        return '                     |';
+        return '              |';
       case 12:
-        return '                    |';
+        return '             |';
       case 13:
         return '            |';
       case 14:
-        return '                  |';
+        return '           |';
       case 15:
         return '          |';
       case 16:
