@@ -127,13 +127,13 @@ class SevenDayForecast {
   String? returnCorrectSpacing(int length) {
     switch (length) {
       case 5:
-        return '                    |';
+        return '                           |';
       case 6:
-        return '                    |';
+        return '                          |';
       case 7:
-        return '                    |';
+        return '                         |';
       case 8:
-        return '                    |';
+        return '                        |';
       case 9:
         return '                       |';
       case 10:
@@ -151,13 +151,13 @@ class SevenDayForecast {
       case 16:
         return '                |';
       case 17:
-        return '                  |';
+        return '               |';
       case 18:
-        return '                  |';
+        return '              |';
       case 19:
-        return '                  |';
+        return '             |';
       case 20:
-        return '                  |';
+        return '            |';
     }
   }
 }

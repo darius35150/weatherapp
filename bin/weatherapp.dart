@@ -4,7 +4,7 @@ import 'classes/CurrentWeatherData.dart';
 // ignore: library_prefixes
 import 'classes/OpeningScreen.dart' as openingScreen;
 // ignore: library_prefixes
-import 'classes/TimeScreen.dart' as timeScreen;
+import 'classes/TimeScreen.dart';
 import 'classes/MainMenu.dart';
 import 'classes/SevenDayForecast.dart';
 import 'classes/FiveDayForecast.dart';
@@ -18,6 +18,11 @@ var currentWeatherData;
 var sevenDayForecast;
 var fiveDayForecast;
 var menu;
+var timeScreen;
+
+var WEATHER_TYPE_CURRENT = 'Current Weather Forecast';
+var WEATHER_TYPE_5DAY = '5 Day Weather Forecast';
+var WEATHER_TYPE_7DAY = '7 Day Weather Forecast';
 
 bool refreshIsRunning = false;
 var _apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
@@ -68,7 +73,8 @@ class WeatherApp {
 
     switch (menu.menu_Item) {
       case '1':
-        timeScreen.TimeScreen.showTime(city, state);
+        timeScreen = TimeScreen(city, state, WEATHER_TYPE_CURRENT);
+        timeScreen.showTime();
 
         currentWeatherData = CurrentWeatherData(city, state);
         currentWeatherData.showCurrentData();
@@ -77,13 +83,18 @@ class WeatherApp {
 
         break;
       case '2':
-        timeScreen.TimeScreen.showTime(city, state);
+        timeScreen = TimeScreen(city, state, WEATHER_TYPE_5DAY);
+        timeScreen.showTime();
 
         fiveDayForecast = FiveDayForecast(city, state);
         fiveDayForecast.getFiveDayForecast();
+
+        refreshIsRunning = true;
+        
         break;
       case '3':
-        timeScreen.TimeScreen.showTime(city, state);
+        timeScreen = TimeScreen(city, state, WEATHER_TYPE_7DAY);
+        timeScreen.showTime();
 
         sevenDayForecast = SevenDayForecast(city, state);
         sevenDayForecast.geocodeLocationAndDisplayData();
@@ -153,8 +164,7 @@ class WeatherApp {
     }
   }
 
-  String get apiKey
-  {
+  String get apiKey {
     return _apiKey;
   }
 }
