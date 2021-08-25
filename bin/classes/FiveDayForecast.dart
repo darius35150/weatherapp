@@ -2,13 +2,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-import '../weatherapp.dart' as weatherApp;
+import '../weatherapp.dart' as weather_app;
 
 class FiveDayForecast{
   var city;
   var state;
   var url, response;
-  var mainClass = weatherApp.WeatherApp();
+  var mainClass = weather_app.WeatherApp();
 
   String partialURL = 'https://api.openweathermap.org/data/2.5/forecast?';
   String locationURL = 'q=';
@@ -52,8 +52,10 @@ class FiveDayForecast{
           data['weather'][0]['description'].toString().length));
       if (data['main']['temp'].toString().length < 5) {
         if (data['main']['temp'].toString().length == 2) {
+          // ignore: prefer_adjacent_string_concatenation
           stdout.write(' ${data['main']['temp']}' + '.00');
         } else {
+          // ignore: prefer_adjacent_string_concatenation
           stdout.write(' ${data['main']['temp']}' + '0');
         }
       } else {
@@ -61,6 +63,7 @@ class FiveDayForecast{
       }
       stdout.write('                   |');
       if (data['main']['feels_like'].toString().length < 5) {
+        // ignore: prefer_adjacent_string_concatenation
         stdout.write(' ${data['main']['feels_like']}' + '0');
       } else {
         stdout.write(' ${data['main']['feels_like']}');
@@ -70,7 +73,7 @@ class FiveDayForecast{
           '------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
 
-    weatherApp.WeatherApp.refresh('SevenDayForecast');
+    weather_app.WeatherApp.refresh('SevenDayForecast');
   }
 
   String getDayOfTheWeek(int day) {
@@ -96,13 +99,13 @@ class FiveDayForecast{
   String? returnCorrectSpacing(int length) {
     switch (length) {
       case 5:
-        return '                    |';
+        return '                           |';
       case 6:
-        return '                    |';
+        return '                          |';
       case 7:
-        return '                    |';
+        return '                         |';
       case 8:
-        return '                    |';
+        return '                        |';
       case 9:
         return '                       |';
       case 10:
@@ -120,13 +123,13 @@ class FiveDayForecast{
       case 16:
         return '                |';
       case 17:
-        return '                  |';
+        return '               |';
       case 18:
-        return '                  |';
+        return '              |';
       case 19:
-        return '                  |';
+        return '             |';
       case 20:
-        return '                  |';
+        return '            |';
     }
   }
 }

@@ -67,7 +67,7 @@ class WeatherApp {
 
     if (Platform.isWindows) {
       stdout.write(Process.runSync('cls', [], runInShell: true).stdout);
-    } else {
+    } else if(Platform.isLinux){
       stdout.write(Process.runSync('clear', [], runInShell: true).stdout);
     }
 

@@ -2,13 +2,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-import '../weatherapp.dart' as weatherApp;
+import '../weatherapp.dart' as weather_app;
 
 class SevenDayForecast {
   var city;
   var state;
   var url;
-  var mainClass = weatherApp.WeatherApp();
+  var mainClass = weather_app.WeatherApp();
 
   String sevenDayURL = 'https://api.openweathermap.org/data/2.5/onecall?';
   String geocodeURL = 'http://api.openweathermap.org/geo/1.0/direct?';
@@ -83,8 +83,10 @@ class SevenDayForecast {
           data['weather'][0]['description'].toString().length));
       if (data['temp']['max'].toString().length < 5) {
         if (data['temp']['max'].toString().length == 2) {
+          // ignore: prefer_adjacent_string_concatenation
           stdout.write(' ${data['temp']['max']}' + '.00');
         } else {
+          // ignore: prefer_adjacent_string_concatenation
           stdout.write(' ${data['temp']['max']}' + '0');
         }
       } else {
@@ -92,6 +94,7 @@ class SevenDayForecast {
       }
       stdout.write('                   |');
       if (data['feels_like']['day'].toString().length < 5) {
+        // ignore: prefer_adjacent_string_concatenation
         stdout.write(' ${data['feels_like']['day']}' + '0');
       } else {
         stdout.write(' ${data['feels_like']['day']}');
@@ -101,7 +104,7 @@ class SevenDayForecast {
           '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
 
-    weatherApp.WeatherApp.refresh('SevenDayForecast');
+    weather_app.WeatherApp.refresh('SevenDayForecast');
   }
 
   String getDayOfTheWeek(int day) {
