@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import '../weatherapp.dart' as weather_app;
-
+import 'WeatherTypes.dart';
 class SevenDayForecast {
   var city;
   var state;
@@ -18,7 +18,6 @@ class SevenDayForecast {
   String geocodeEndURL = ',1&limit=1&appid=';
   String latURL = 'lat=';
   String longURL = '&lon=';
-
 
   http.Response? geocodeResponse;
   http.Response? sevenDayResponse;
@@ -36,8 +35,13 @@ class SevenDayForecast {
   SevenDayForecast(this.city, this.state);
 
   Future<void> geocodeLocationAndDisplayData() async {
-    url = Uri.parse(
-        geocodeURL + locationURL + city + ',' + state + geocodeEndURL + mainClass.apiKey);
+    url = Uri.parse(geocodeURL +
+        locationURL +
+        city +
+        ',' +
+        state +
+        geocodeEndURL +
+        mainClass.apiKey);
     geocodeResponse = await http.get(url);
 
     geocodeConverter = JsonDecoder().convert(geocodeResponse!.body.toString());
@@ -75,11 +79,11 @@ class SevenDayForecast {
       stdout.write('|');
       stdout.write(' ${getDayOfTheWeek(day)} $datetime');
       stdout.write('                             |');
-      stdout.write(' ${data['weather'][0]['main'].toString().substring(0, 4)}');
-      stdout.write('                                 |');
+      stdout.write(' ${data['weather'][0]['main'].toString()}');
+      stdout.write(returnCorrectSpacingForWeatherColumn(data['weather'][0]['main'].toString().length));
       stdout.write(
           ' ${data['weather'][0]['description'].toString().substring(0, data['weather'][0]['description'].toString().length)}');
-      stdout.write(returnCorrectSpacing(
+      stdout.write(returnCorrectSpacingForDescrColumn(
           data['weather'][0]['description'].toString().length));
       if (data['temp']['max'].toString().length < 5) {
         if (data['temp']['max'].toString().length == 2) {
@@ -104,7 +108,7 @@ class SevenDayForecast {
           '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
 
-    weather_app.WeatherApp.refresh('SevenDayForecast');
+    weather_app.WeatherApp.refresh(WeatherTypes.WEATHER_CLASS_7DAY);
   }
 
   String getDayOfTheWeek(int day) {
@@ -127,7 +131,7 @@ class SevenDayForecast {
     return '';
   }
 
-  String? returnCorrectSpacing(int length) {
+  String? returnCorrectSpacingForDescrColumn(int length) {
     switch (length) {
       case 5:
         return '                           |';
@@ -161,6 +165,45 @@ class SevenDayForecast {
         return '             |';
       case 20:
         return '            |';
+    }
+  }
+
+  String? returnCorrectSpacingForWeatherColumn(int length) {
+    switch (length) {
+      case 4:
+        return '                                 |';
+      case 5:
+        return '                                |';
+      case 6:
+        return '                               |';
+      case 7:
+        return '                              |';
+      case 8:
+        return '                             |';
+      case 9:
+        return '                            |';
+      case 10:
+        return '                           |';
+      case 11:
+        return '                          |';
+      case 12:
+        return '                         |';
+      case 13:
+        return '                        |';
+      case 14:
+        return '                       |';
+      case 15:
+        return '                      |';
+      case 16:
+        return '                     |';
+      case 17:
+        return '                    |';
+      case 18:
+        return '                   |';
+      case 19:
+        return '                  |';
+      case 20:
+        return '                 |';
     }
   }
 }

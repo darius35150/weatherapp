@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import '../weatherapp.dart' as weather_app;
+import 'WeatherTypes.dart';
 
-class FiveDayForecast{
+class FiveDayForecast {
   var city;
   var state;
   var url, response;
@@ -21,10 +22,17 @@ class FiveDayForecast{
 
   FiveDayForecast(this.city, this.state);
 
-  Future<bool?> getFiveDayForecast() async{
-    url = Uri.parse(partialURL + locationURL + city + ',' + state + ',' + keyURL + mainClass.apiKey);
+  Future<bool?> getFiveDayForecast() async {
+    url = Uri.parse(partialURL +
+        locationURL +
+        city +
+        ',' +
+        state +
+        ',' +
+        keyURL +
+        mainClass.apiKey);
 
-    response =  await http.post(url);
+    response = await http.post(url);
 
     fiveDayConverter = JsonDecoder().convert(response.body);
 
@@ -36,8 +44,8 @@ class FiveDayForecast{
         '------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
 
     for (var data in fiveDayConverter!['list']) {
-      var datetime = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000)
-          .toString();
+      var datetime =
+          DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).toString();
 
       var day = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).weekday;
 
@@ -73,7 +81,7 @@ class FiveDayForecast{
           '------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
 
-    weather_app.WeatherApp.refresh('SevenDayForecast');
+    weather_app.WeatherApp.refresh(WeatherTypes.WEATHER_CLASS_5DAY);
   }
 
   String getDayOfTheWeek(int day) {

@@ -8,10 +8,13 @@ import 'classes/TimeScreen.dart';
 import 'classes/MainMenu.dart';
 import 'classes/SevenDayForecast.dart';
 import 'classes/FiveDayForecast.dart';
+import 'classes/ClearScreen.dart';
+import 'classes/WeatherTypes.dart';
 
 String menuItem = '';
 String sevenDay = 'SevenDayForecast';
 String current = 'CurrentWeatherData';
+String fiveDay = 'FiveDayForecast';
 
 var city, state;
 var currentWeatherData;
@@ -20,20 +23,25 @@ var fiveDayForecast;
 var menu;
 var timeScreen;
 
-var WEATHER_TYPE_CURRENT = 'Current Weather Forecast';
-var WEATHER_TYPE_5DAY = '5 Day Weather Forecast';
-var WEATHER_TYPE_7DAY = '7 Day Weather Forecast';
-
 bool refreshIsRunning = false;
-var _apiKey = '40d60d805e0cad1cd92cf0bcf8f3aece';
+var _apiKey = '9e00e7490b3e4fe0221f432d8767a854';
 
 class WeatherApp {
   WeatherApp();
 
   void startApp(
       bool refreshing, String? changeLocation, String? changeWeatherType) {
+    grabParameters(refreshing, changeLocation, changeWeatherType);
+
+    showScreen();
+  }
+
+  void grabParameters(
+      bool refreshing, String? changeLocation, String? changeWeatherType) {
     if (!refreshing) {
       openingScreen.SlashScreen.getSplashScreen();
+
+      ClearScreen.clearAll();
 
       menu = MainMenu();
       menu.getMainMenu();
@@ -45,13 +53,13 @@ class WeatherApp {
       stdout.write('Pleases enter state:  ');
       state = stdin.readLineSync();
 
-      stdout.writeln('\n\n');
+      ClearScreen.clearAll();
     } else {
       if (changeWeatherType == 'y') {
         menu = MainMenu();
         menu.getMainMenu();
 
-        stdout.write('\n\n');
+        ClearScreen.clearAll();
       }
 
       if (changeLocation == 'y') {
@@ -61,19 +69,15 @@ class WeatherApp {
         stdout.write('Pleases enter state:  ');
         state = stdin.readLineSync();
 
-        stdout.writeln('\n\n');
+        ClearScreen.clearAll();
       }
     }
+  }
 
-    if (Platform.isWindows) {
-      stdout.write(Process.runSync('cls', [], runInShell: true).stdout);
-    } else if(Platform.isLinux){
-      stdout.write(Process.runSync('clear', [], runInShell: true).stdout);
-    }
-
+  void showScreen() {
     switch (menu.menu_Item) {
       case '1':
-        timeScreen = TimeScreen(city, state, WEATHER_TYPE_CURRENT);
+        timeScreen = TimeScreen(city, state, WeatherTypes.WEATHER_TYPE_CURRENT);
         timeScreen.showTime();
 
         currentWeatherData = CurrentWeatherData(city, state);
@@ -83,17 +87,17 @@ class WeatherApp {
 
         break;
       case '2':
-        timeScreen = TimeScreen(city, state, WEATHER_TYPE_5DAY);
+        timeScreen = TimeScreen(city, state, WeatherTypes.WEATHER_TYPE_5DAY);
         timeScreen.showTime();
 
         fiveDayForecast = FiveDayForecast(city, state);
         fiveDayForecast.getFiveDayForecast();
 
         refreshIsRunning = true;
-        
+
         break;
       case '3':
-        timeScreen = TimeScreen(city, state, WEATHER_TYPE_7DAY);
+        timeScreen = TimeScreen(city, state, WeatherTypes.WEATHER_TYPE_7DAY);
         timeScreen.showTime();
 
         sevenDayForecast = SevenDayForecast(city, state);
@@ -112,7 +116,14 @@ class WeatherApp {
     sleep(const Duration(minutes: 5));
     stdout.write('Would you like to change weather type?(y/n)   ');
     typeOfWeather = stdin.readLineSync();
-    if (typeOfWeather == 'n' && current == className) {
+
+    if(typeOfWeather == 'y') {
+      stdout.write('Would you like to change locations?(y/n)   ');
+      locations = stdin.readLineSync();
+      var app = WeatherApp();
+      app.startApp(refreshIsRunning, locations, typeOfWeather);
+    } 
+    else if(typeOfWeather == 'n' && current == className) {
       stdout.write('Would you like to change locations?(y/n)   ');
       locations = stdin.readLineSync();
 
@@ -123,44 +134,29 @@ class WeatherApp {
         var app = WeatherApp();
         app.startApp(refreshIsRunning, locations, typeOfWeather);
       }
-    } else {
-      if (typeOfWeather == 'n' && sevenDay == className) {
-        stdout.write('Would you like to change locations?(y/n)   ');
-        locations = stdin.readLineSync();
-
-        if (locations == 'n') {
-          timeScreen.TimeScreen.showTime(city, state);
-          currentWeatherData.showCurrentData();
-        } else {
-          var app = WeatherApp();
-          app.startApp(refreshIsRunning, locations, typeOfWeather);
-        }
-      }
-    }
-
-    if (typeOfWeather == 'y' && current == className) {
+    } else if (typeOfWeather == 'n' && sevenDay == className) {
       stdout.write('Would you like to change locations?(y/n)   ');
       locations = stdin.readLineSync();
-      if (locations == 'y') {
-        var app = WeatherApp();
-        app.startApp(refreshIsRunning, locations, typeOfWeather);
+
+      if (locations == 'n') {
+        timeScreen.TimeScreen.showTime(city, state);
+        sevenDayForecast.showCurrentData();
       } else {
         var app = WeatherApp();
         app.startApp(refreshIsRunning, locations, typeOfWeather);
       }
-    } else {
-      if (typeOfWeather == 'y' && sevenDay == className) {
-        stdout.write('Would you like to change locations?(y/n)   ');
-        locations = stdin.readLineSync();
+    }else{
+      stdout.write('Would you like to change locations?(y/n)   ');
+      locations = stdin.readLineSync();
 
-        if (locations == 'y') {
-          var app = WeatherApp();
-          app.startApp(refreshIsRunning, locations, typeOfWeather);
-        } else {
-          var app = WeatherApp();
-          app.startApp(refreshIsRunning, locations, typeOfWeather);
-        }
+      if (locations == 'n') {
+        timeScreen.TimeScreen.showTime(city, state);
+        fiveDayForecast.showCurrentData();
+      } else {
+        var app = WeatherApp();
+        app.startApp(refreshIsRunning, locations, typeOfWeather);
       }
+
     }
   }
 

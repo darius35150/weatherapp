@@ -1,7 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+
 import '../weatherapp.dart' as app;
+import 'WeatherTypes.dart';
 
 class CurrentWeatherData {
   var city;
@@ -27,14 +29,20 @@ class CurrentWeatherData {
 
   Future<bool?> showCurrentData() async {
     mainClass = app.WeatherApp();
-    url = Uri.parse(
-        partialURL + locationURL + city + ',' + state + keyURL + mainClass.apiKey);
+    url = Uri.parse(partialURL +
+        locationURL +
+        city +
+        ',' +
+        state +
+        keyURL +
+        mainClass.apiKey);
 
+    // stdout.write(url);
     response = await http.post(url, body: {'name': 'doodle', 'color': 'green'});
 
     parseAndDisplayJson(response.body);
 
-    app.WeatherApp.refresh('CurrentWeatherData');
+    app.WeatherApp.refresh(WeatherTypes.WEATHER_CLASS_CURRENT);
   }
 
   void parseAndDisplayJson(var jsonFile) {
@@ -51,8 +59,8 @@ class CurrentWeatherData {
       }
       stdout.writeln(
           '---------------------------------------------------------------------------------------------');
-      stdout.write('| overcast clouds'.substring(0, 17));
-      stdout.write('       |');
+      stdout.write('| ${data['main']}');
+      stdout.write(returnCorrectSpacingForWeatherColumn(data['main'].toString().length));
 
       if (data['description'].toString().length > 13) {
         stdout.write(' ${data['description'].toString()}');
@@ -60,7 +68,7 @@ class CurrentWeatherData {
         stdout.write(' ${data['description'].toString()}');
       }
 
-      stdout.write(returnCorrectSpacing(data['description'].toString().length));
+      stdout.write(returnCorrectSpacingForDescrColumn(data['description'].toString().length));
       stdout.write('  ${temp.round()}');
       stdout.write('                |');
       stdout.write(' ${feelsLike.round()}');
@@ -74,11 +82,9 @@ class CurrentWeatherData {
       }
       counter += 1;
     }
-
-    
   }
 
-  String? returnCorrectSpacing(int length) {
+  String? returnCorrectSpacingForDescrColumn(int length) {
     switch (length) {
       case 5:
         return '                     |';
@@ -112,6 +118,45 @@ class CurrentWeatherData {
         return '      |';
       case 20:
         return '     |';
+    }
+  }
+
+  String? returnCorrectSpacingForWeatherColumn(int length) {
+    switch (length) {
+      case 4:
+        return '                  |';
+      case 5:
+        return '                 |';
+      case 6:
+        return '                |';
+      case 7:
+        return '               |';
+      case 8:
+        return '              |';
+      case 9:
+        return '             |';
+      case 10:
+        return '            |';
+      case 11:
+        return '           |';
+      case 12:
+        return '          |';
+      case 13:
+        return '         |';
+      case 14:
+        return '        |';
+      case 15:
+        return '       |';
+      case 16:
+        return '      |';
+      case 17:
+        return '     |';
+      case 18:
+        return '    |';
+      case 19:
+        return '   |';
+      case 20:
+        return '  |';
     }
   }
 }
