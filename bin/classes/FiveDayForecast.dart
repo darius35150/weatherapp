@@ -37,15 +37,15 @@ class FiveDayForecast {
     fiveDayConverter = JsonDecoder().convert(response.body);
 
     stdout.writeln(
-        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     stdout.writeln(
-        '| Day/Date                                                | Weather                              | Descr                           | Temp                    | Feels Like          |');
+        '| Day/Date                                         | Weather                              | Descr                           | Temp                    | Feels Like          |');
     stdout.writeln(
-        '------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
 
     for (var data in fiveDayConverter!['list']) {
       var datetime =
-          DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).toString();
+          DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).toString().substring(0, 16);
 
       var day = DateTime.fromMillisecondsSinceEpoch(data['dt'] * 1000).weekday;
 
@@ -72,13 +72,19 @@ class FiveDayForecast {
       stdout.write('                   |');
       if (data['main']['feels_like'].toString().length < 5) {
         // ignore: prefer_adjacent_string_concatenation
-        stdout.write(' ${data['main']['feels_like']}' + '0');
+        if (data['main']['feels_like'].toString().length == 2) {
+          // ignore: prefer_adjacent_string_concatenation
+          stdout.write(' ${data['main']['feels_like']}' + '.00');
+        } else {
+          // ignore: prefer_adjacent_string_concatenation
+          stdout.write(' ${data['main']['feels_like']}' + '0');
+        }
       } else {
         stdout.write(' ${data['main']['feels_like']}');
       }
       stdout.writeln('               |');
       stdout.writeln(
-          '------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+          '-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     }
 
     weather_app.WeatherApp.refresh(WeatherTypes.WEATHER_CLASS_5DAY);

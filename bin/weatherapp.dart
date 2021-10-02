@@ -113,22 +113,22 @@ class WeatherApp {
     String? typeOfWeather = 'n';
     String? locations = 'n';
 
-    sleep(const Duration(minutes: 5));
+    sleep(const Duration(minutes: 0));
     stdout.write('Would you like to change weather type?(y/n)   ');
     typeOfWeather = stdin.readLineSync();
 
-    if(typeOfWeather == 'y') {
+    if (typeOfWeather == 'y') {
       stdout.write('Would you like to change locations?(y/n)   ');
       locations = stdin.readLineSync();
       var app = WeatherApp();
       app.startApp(refreshIsRunning, locations, typeOfWeather);
-    } 
-    else if(typeOfWeather == 'n' && current == className) {
+    } else if (typeOfWeather == 'n' && current == className) {
       stdout.write('Would you like to change locations?(y/n)   ');
       locations = stdin.readLineSync();
 
       if (locations == 'n') {
-        timeScreen.TimeScreen.showTime(city, state);
+        timeScreen = TimeScreen(city, state, WeatherTypes.WEATHER_TYPE_CURRENT);
+        timeScreen.showTime();
         currentWeatherData.showCurrentData();
       } else {
         var app = WeatherApp();
@@ -139,24 +139,25 @@ class WeatherApp {
       locations = stdin.readLineSync();
 
       if (locations == 'n') {
-        timeScreen.TimeScreen.showTime(city, state);
-        sevenDayForecast.showCurrentData();
+        timeScreen = TimeScreen(city, state, WeatherTypes.WEATHER_TYPE_7DAY);
+        timeScreen.showTime();
+        sevenDayForecast.geocodeLocationAndDisplayData();
       } else {
         var app = WeatherApp();
         app.startApp(refreshIsRunning, locations, typeOfWeather);
       }
-    }else{
+    } else {
       stdout.write('Would you like to change locations?(y/n)   ');
       locations = stdin.readLineSync();
 
       if (locations == 'n') {
-        timeScreen.TimeScreen.showTime(city, state);
-        fiveDayForecast.showCurrentData();
+        timeScreen = TimeScreen(city, state, WeatherTypes.WEATHER_TYPE_5DAY);
+        timeScreen.showTime();
+        fiveDayForecast.getFiveDayForecast();
       } else {
         var app = WeatherApp();
         app.startApp(refreshIsRunning, locations, typeOfWeather);
       }
-
     }
   }
 

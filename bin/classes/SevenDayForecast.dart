@@ -99,7 +99,13 @@ class SevenDayForecast {
       stdout.write('                   |');
       if (data['feels_like']['day'].toString().length < 5) {
         // ignore: prefer_adjacent_string_concatenation
-        stdout.write(' ${data['feels_like']['day']}' + '0');
+        if (data['feels_like']['day'].toString().length == 2) {
+          // ignore: prefer_adjacent_string_concatenation
+          stdout.write(' ${data['feels_like']['day']}' + '.00');
+        } else {
+          // ignore: prefer_adjacent_string_concatenation
+          stdout.write(' ${data['feels_like']['day']}' + '0');
+        }
       } else {
         stdout.write(' ${data['feels_like']['day']}');
       }
