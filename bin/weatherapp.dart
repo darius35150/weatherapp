@@ -113,7 +113,7 @@ class WeatherApp {
     String? typeOfWeather = 'n';
     String? locations = 'n';
 
-    sleep(const Duration(minutes: 0));
+    sleep(const Duration(minutes: 5));
     stdout.write('Would you like to change weather type?(y/n)   ');
     typeOfWeather = stdin.readLineSync();
 
