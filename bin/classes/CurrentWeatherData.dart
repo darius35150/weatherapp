@@ -60,7 +60,8 @@ class CurrentWeatherData {
       stdout.writeln(
           '---------------------------------------------------------------------------------------------');
       stdout.write('| ${data['main']}');
-      stdout.write(returnCorrectSpacingForWeatherColumn(data['main'].toString().length));
+      stdout.write(
+          returnCorrectSpacingForWeatherColumn(data['main'].toString().length));
 
       if (data['description'].toString().length > 13) {
         stdout.write(' ${data['description'].toString()}');
@@ -68,7 +69,8 @@ class CurrentWeatherData {
         stdout.write(' ${data['description'].toString()}');
       }
 
-      stdout.write(returnCorrectSpacingForDescrColumn(data['description'].toString().length));
+      stdout.write(returnCorrectSpacingForDescrColumn(
+          data['description'].toString().length));
       stdout.write('  ${temp.round()}');
       stdout.write('                |');
       stdout.write(' ${feelsLike.round()}');
@@ -86,6 +88,8 @@ class CurrentWeatherData {
 
   String? returnCorrectSpacingForDescrColumn(int length) {
     switch (length) {
+      case 4:
+        return '                     |';
       case 5:
         return '                     |';
       case 6:
