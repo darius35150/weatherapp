@@ -1,15 +1,13 @@
 import 'dart:io';
 
-import 'classes/CurrentWeatherData.dart';
-// ignore: library_prefixes
-import 'classes/OpeningScreen.dart' as openingScreen;
-// ignore: library_prefixes
-import 'classes/TimeScreen.dart';
-import 'classes/MainMenu.dart';
-import 'classes/SevenDayForecast.dart';
-import 'classes/FiveDayForecast.dart';
-import 'classes/ClearScreen.dart';
-import 'classes/WeatherTypes.dart';
+import 'classes//screen_types/splash_screen/OpeningScreen.dart' as opening_screen;
+import 'classes/weather_types/WeatherTypes.dart';
+import 'classes/screen_types/clear_screen/ClearScreen.dart';
+import 'classes/screen_types/main_menu/MainMenu.dart';
+import 'classes/screen_types/time_screen/TimeScreen.dart';
+import 'classes/weather/CurrentWeatherData.dart';
+import 'classes/weather/FiveDayForecast.dart';
+import 'classes/weather/SevenDayForecast.dart';
 
 String menuItem = '';
 String sevenDay = 'SevenDayForecast';
@@ -39,7 +37,7 @@ class WeatherApp {
   void grabParameters(
       bool refreshing, String? changeLocation, String? changeWeatherType) {
     if (!refreshing) {
-      openingScreen.SlashScreen.getSplashScreen();
+      opening_screen.SlashScreen.getSplashScreen();
 
       ClearScreen.clearAll();
 

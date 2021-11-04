@@ -2,8 +2,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-import '../weatherapp.dart' as weather_app;
-import 'WeatherTypes.dart';
+import '../../weatherapp.dart' as weather_app;
+import '../weather_types/WeatherTypes.dart';
 
 class FiveDayForecast {
   var city;

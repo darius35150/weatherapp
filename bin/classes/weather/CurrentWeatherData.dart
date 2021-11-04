@@ -2,8 +2,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-import '../weatherapp.dart' as app;
-import 'WeatherTypes.dart';
+import '../../weatherapp.dart' as app;
+import '../weather_types/WeatherTypes.dart';
 
 class CurrentWeatherData {
   var city;
