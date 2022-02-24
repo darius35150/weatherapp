@@ -87,6 +87,7 @@ class CurrentWeatherData {
   }
 
   String? returnCorrectSpacingForDescrColumn(int length) {
+    // stdout.write('******************length[$length]');
     switch (length) {
       case 4:
         return '                     |';
@@ -122,6 +123,12 @@ class CurrentWeatherData {
         return '      |';
       case 20:
         return '     |';
+      case 21:
+        return '    |';
+      case 22:
+        return '   |';
+      case 23:
+        return '  |';
     }
   }
 
@@ -161,6 +168,8 @@ class CurrentWeatherData {
         return '   |';
       case 20:
         return '  |';
+      case 21:
+        return ' |';
     }
   }
 }
